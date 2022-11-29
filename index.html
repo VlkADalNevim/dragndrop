@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <!-- Title -->
+        <title>Drag and Drop</title>
+        <!-- jQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- CSS -->
+		<link href="css/index.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        
+        <div id="drop-area">
+            <form class="my-form">
+              <p>Nahrajte soubory pretazenim nebo volbou Select</p>
+              <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+              <label class="button" for="fileElem">Select</label>
+            </form>
+        </div>
+
+        <script type="text/javascript">
+
+            let dropArea = document.getElementById('drop-area');
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false)
+            });
+
+            function preventDefaults (e) {
+                e.preventDefault()
+                e.stopPropagation()
+            };
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false)
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false)
+            });
+
+            function highlight(e) {
+                dropArea.classList.add('highlight')
+            };
+
+            function unhighlight(e) {
+                dropArea.classList.remove('highlight')
+            };
+
+            dropArea.addEventListener('drop', handleDrop, false)
+
+            function handleDrop(e) {
+                let dt = e.dataTransfer
+                let files = dt.files
+
+                handleFiles(files)
+            };
+
+            function handleFiles(files) {
+                ([...files]).forEach(uploadFile)
+            };
+
+            function uploadFile(file) {
+                let url = 'YOUR URL HERE'
+                let formData = new FormData()
+
+                formData.append('file', file)
+
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(() => { /* Done. Inform the user */ })
+                .catch(() => { /* Error. Inform the user */ })
+            };
+
+
+        </script>
+    </body>
+</html>
