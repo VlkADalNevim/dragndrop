@@ -1,5 +1,8 @@
 <html>
     <head>
+        <meta charset="utf-8">
+        <!-- Font Awesome -->
+        <script src="https://kit.fontawesome.com/9526c175c2.js" crossorigin="anonymous"></script>
         <!-- Title -->
         <title>Drag and Drop</title>
         <!-- jQuery -->
@@ -12,11 +15,17 @@
         
         <div id="drop-area">
             <form class="my-form">
-              <p>Nahrajte soubory pretazenim nebo volbou Select</p>
+              <p>Nahrajte soubory přetažením nebo za pomocí <i class="fa-solid fa-magnifying-glass"></i></p>
               <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
-              <label class="button" for="fileElem">Select</label>
+              <label class="button" for="fileElem"><i class="fa-solid fa-magnifying-glass"></i></label>
             </form>
+            <section>
+                <a id="response"></a>
+            </section>
+            
         </div>
+
+       
 
         <script type="text/javascript">
 
@@ -61,7 +70,7 @@
             };
 
             function uploadFile(file) {
-                let url = 'YOUR URL HERE'
+                let url = 'upload.php'
                 let formData = new FormData()
 
                 formData.append('file', file)
@@ -70,8 +79,14 @@
                     method: 'POST',
                     body: formData
                 })
-                .then(() => { /* Done. Inform the user */ })
-                .catch(() => { /* Error. Inform the user */ })
+                .then(() => { 
+                    response = "Uspesne ulozeno"
+                    document.getElementById("response").innerHTML = response;
+                })
+                .catch(() => { 
+                    response = "Error..."
+                    document.getElementById("response").innerHTML = response;
+                })
             };
 
 
